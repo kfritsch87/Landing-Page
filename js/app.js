@@ -31,10 +31,6 @@
  */
 
 // build the nav
-function Nav(id) {
-  document.getElementById(id).scrollIntoView();
-}
-
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
@@ -45,20 +41,21 @@ function init() {
     let a = nav_list
       .appendChild(document.createElement("li"))
       .appendChild(document.createElement("a"))
+    a.classList.add('menu__link');
     a.appendChild(document.createTextNode(s.getAttribute("data-nav")))
     //a.setAttribute("href", "#"+s.getAttribute("id"));
-    a.addEventListener("click",function(e){Nav(s.getAttribute("id"));});
+    a.addEventListener("click",function(e){s.scrollIntoView();});
     // add callbacks for highlights
     (new IntersectionObserver((entries,observer)=>{
         //console.log("observed "+s.getAttribute("data-nav"));
         if(entries[0].isIntersecting){
             s.classList.add('your-active-class');
-            a.classList.add('active-nav');
+            a.classList.add('active');
         } else {
-            a.classList.remove('active-nav');
+            a.classList.remove('active');
             s.classList.remove('your-active-class');
         }
-    })).observe(s);
+    },{threshold:0.01})).observe(s);
   });
 }
 
