@@ -32,8 +32,6 @@
 
 // build the nav
 function Nav(id) {
-  //window.scrollTo(0,document.getElementById(id).offsetTop);
-  //alert(document.getElementById(id).textContent);
   document.getElementById(id).scrollIntoView();
 }
 
@@ -43,12 +41,24 @@ function init() {
   const sections = [...document.getElementsByTagName("section")];
   const nav_list = document.getElementById("navbar__list");
   sections.forEach(function(s) {
-    a = nav_list
+    // create nav bar item
+    let a = nav_list
       .appendChild(document.createElement("li"))
       .appendChild(document.createElement("a"))
     a.appendChild(document.createTextNode(s.getAttribute("data-nav")))
-    a.setAttribute("href", "#"+s.getAttribute("id"));
-    console.log(s.getAttribute("data-nav"));
+    //a.setAttribute("href", "#"+s.getAttribute("id"));
+    a.addEventListener("click",function(e){Nav(s.getAttribute("id"));});
+    // add callbacks for highlights
+    (new IntersectionObserver((entries,observer)=>{
+        //console.log("observed "+s.getAttribute("data-nav"));
+        if(entries[0].isIntersecting){
+            s.classList.add('your-active-class');
+            a.classList.add('active-nav');
+        } else {
+            a.classList.remove('active-nav');
+            s.classList.remove('your-active-class');
+        }
+    })).observe(s);
   });
 }
 
